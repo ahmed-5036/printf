@@ -29,15 +29,39 @@ void _write_str(char *str, int *count)
 }
 
 /**
- * _write_int - Write an integer to stdout
- * @n: The integer to be written
- * @count: Pointer to the count of characters printed
+ * int_to_str - Converts an integer to a string
+ * @num: The integer to convert
+ *
+ * Return: The resulting string
  */
-void _write_int(int n, int *count)
+char *int_to_str(int num)
 {
-    char buffer[20]; // Assuming a maximum of 20 digits for an int
-    snprintf(buffer, sizeof(buffer), "%d", n);
-    _write_str(buffer, count);
+    char *str;
+    int num_copy = num;
+    int num_digits = 0;
+
+    /* Count the number of digits in the integer */
+    while (num_copy != 0)
+    {
+        num_copy /= 10;
+        num_digits++;
+    }
+
+    /* Allocate memory for the string (including space for '\0') */
+    str = malloc(num_digits + 1);
+    if (str == NULL)
+        return (NULL);
+
+    /* Build the string in reverse order */
+    str[num_digits] = '\0';
+    while (num != 0)
+    {
+        num_digits--;
+        str[num_digits] = '0' + (num % 10);
+        num /= 10;
+    }
+
+    return (str);
 }
 
 /**
