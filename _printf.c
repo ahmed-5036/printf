@@ -92,12 +92,20 @@ int _printf(const char *format, ...)
             case 's':
                 _write_str(va_arg(args, char *), &count);
                 break;
-            case 'd':
-            case 'i':
-                _write_int(va_arg(args, int), &count);
-                break;
             case '%':
                 _write_char('%', &count);
+                break;
+            case 'd':
+            case 'i':
+                {
+                    int num = va_arg(args, int);
+                    char *str = int_to_str(num);
+                    if (str != NULL)
+                    {
+                        _write_str(str, &count);
+                        free(str);
+                    }
+                }
                 break;
             default:
                 _write_char('%', &count);
@@ -110,19 +118,4 @@ int _printf(const char *format, ...)
 
     va_end(args);
     return (count);
-}
-
-/**
- * _write_int - Write an integer to stdout
- * @num: The integer to be written
- * @count: Pointer to the count of characters printed
- */
-void _write_int(int num, int *count)
-{
-    char *str = int_to_str(num);
-    if (str != NULL)
-    {
-        _write_str(str, count);
-        free(str);
-    }
 }
